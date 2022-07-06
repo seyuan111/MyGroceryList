@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import React, {useState} from 'react'
 import './App.css';
 
 function App() {
+  const [list, setList] = useState([]);
+  const [str, setStr] = useState("");
+
+  function handleAddItem() {
+    const newList = [...list, {title: str}];
+    setList(newList)
+    setStr('')
+  }
+  function handleRemoveItem(index) {
+    const newList = [];
+    for(let i =0; i< list.length; i++){
+      if(index != i){
+        newList.push(list[i]);
+      }
+    }
+    setList(newList);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>This is my grocery list</h1>
+      <div className="inputItem">
+        <input type="text" value={str} onChange={(event) => setStr(event.target.value)}></input>
+        <input type="button" value="Add Item" onClick={() => handleAddItem()}></input>
+      </div>
+      <div className="listOfItems">
+        {list.map((item, index) => {
+          return (
+            <div className="removeItem">
+              <p>{item.title}<input className="removeMe" type="button" value="Delete Item" onClick={() => handleRemoveItem(index)}></input></p>
+            </div>
+          )
+        })}
+      </div>
     </div>
   );
 }
